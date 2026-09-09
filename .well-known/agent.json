@@ -1,0 +1,21 @@
+{
+  "name": "giuelvy.it AI Compute Router",
+  "description": "Machine-readable GPU compute comparison and routing for legitimate AI agents.",
+  "homepage": "https://giuelvy.it/",
+  "agent_docs": "https://giuelvy.it/agent-api.html",
+  "llms_txt": "https://giuelvy.it/llms.txt",
+  "policy": "https://giuelvy.it/agent-policy.html",
+  "sitemap": "https://giuelvy.it/sitemap.xml",
+  "status": "early-access-specification",
+  "automation_allowed": true,
+  "prohibited": [
+    "fake-clicks",
+    "fake-referrals",
+    "fraud",
+    "credential-attacks",
+    "access-control-bypass",
+    "denial-of-service",
+    "malware",
+    "spam"
+  ]
+}
