@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "giuelvy AI Compute Router API",
+    "version": "1.0.0-beta",
+    "description": "Machine-readable GPU compute routing for legitimate AI agents and automation."
+  },
+  "servers": [
+    {"url": "https://giuelvy.it"}
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Service health",
+        "responses": {"200": {"description": "Healthy"}}
+      }
+    },
+    "/api/route": {
+      "get": {
+        "summary": "Find GPU compute routes",
+        "parameters": [
+          {"name": "gpu", "in": "query", "required": true, "schema": {"type": "string", "example": "H100"}},
+          {"name": "count", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 64, "default": 1}},
+          {"name": "hours", "in": "query", "schema": {"type": "number", "minimum": 0.01, "maximum": 720, "default": 1}},
+          {"name": "priority", "in": "query", "schema": {"type": "string", "default": "lowest_cost"}}
+        ],
+        "responses": {
+          "200": {"description": "Ranked compute routes"},
+          "401": {"description": "API key required when paid/private mode is enabled"},
+          "429": {"description": "Rate limited"}
+        }
+      },
+      "post": {
+        "summary": "Find GPU compute routes",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["gpu"],
+                "properties": {
+                  "gpu": {"type": "string", "example": "H100"},
+                  "count": {"type": "integer", "minimum": 1, "maximum": 64, "default": 1},
+                  "hours": {"type": "number", "minimum": 0.01, "maximum": 720, "default": 1},
+                  "priority": {"type": "string", "default": "lowest_cost"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Ranked compute routes"},
+          "400": {"description": "Invalid request"},
+          "401": {"description": "API key required when paid/private mode is enabled"},
+          "429": {"description": "Rate limited"}
+        }
+      }
+    }
+  }
+}
