@@ -5,36 +5,66 @@
 <title>AI Compute Router API for Agents | giuelvy.it</title>
 <meta name="description" content="Machine-readable GPU compute routing for AI agents. Compare providers and prepare automated compute purchasing workflows.">
 <link rel="canonical" href="https://giuelvy.it/agent-api.html">
-<style>body{font-family:system-ui,sans-serif;max-width:900px;margin:48px auto;padding:0 20px;line-height:1.6;color:#151515}code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.box{border:1px solid #ddd;border-radius:12px;padding:20px;margin:24px 0}a{color:#0757c7}</style>
+<style>
+body{font-family:system-ui,sans-serif;max-width:980px;margin:48px auto;padding:0 20px;line-height:1.6;color:#151515}
+code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.box{border:1px solid #ddd;border-radius:12px;padding:20px;margin:24px 0}a{color:#0757c7}.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}.plan{border:1px solid #ddd;border-radius:14px;padding:20px}.price{font-size:2rem;font-weight:700;margin:.3rem 0}.buy{display:inline-block;border:0;border-radius:9px;padding:12px 16px;background:#111;color:#fff;font-weight:700;cursor:pointer}.buy:disabled{opacity:.6;cursor:wait}.muted{color:#666;font-size:.92rem}.notice{display:none;margin-top:14px;padding:12px;border-radius:9px;background:#f4f4f4}
+</style>
 </head>
 <body>
 <h1>AI Compute Router for Agents</h1>
-<p>giuelvy.it is evolving from a human GPU comparison site into a machine-readable compute router. The goal is simple: an AI agent asks for compute requirements, the router returns suitable GPU options, estimated cost and provider destinations.</p>
-<div class="box"><strong>Status: early access / specification.</strong><br>The public agent API and paid access are being built. No payment is collected on this page yet.</div>
-<h2>Planned request</h2>
-<pre><code>POST /v1/route
+<p>giuelvy.it is evolving from a human GPU comparison site into a machine-readable compute router. An AI agent can ask for compute requirements and receive suitable GPU options, estimated cost and provider destinations.</p>
+<div class="box"><strong>Early access.</strong><br>The routing API is being prepared for paid agent access. We are currently measuring real purchase intent before enabling PayPal checkout.</div>
+
+<h2>Early-access API credits</h2>
+<p>Choose the package you would actually buy. <strong>No payment is taken yet.</strong> A click on “Buy API credits” records one anonymous purchase-intent signal for this browser, then shows the pre-launch message.</p>
+<div class="plans">
+  <div class="plan"><h3>Starter</h3><div class="price">€9</div><p>1,000 routing requests</p><button class="buy" data-plan="starter">Buy API credits</button></div>
+  <div class="plan"><h3>Builder</h3><div class="price">€29</div><p>5,000 routing requests</p><button class="buy" data-plan="builder">Buy API credits</button></div>
+  <div class="plan"><h3>Agent</h3><div class="price">€99</div><p>25,000 routing requests</p><button class="buy" data-plan="agent">Buy API credits</button></div>
+</div>
+<div id="notice" class="notice">Thanks — your purchase intent was recorded. PayPal checkout is not live yet, so you have not been charged.</div>
+<p class="muted">We count at most one intent per plan per browser to reduce accidental duplicate clicks. This is a market-validation counter, not a payment system.</p>
+
+<h2>API request</h2>
+<pre><code>POST /api/route
 {
   "gpu": "H100",
   "count": 2,
   "hours": 6,
   "priority": "lowest_cost"
 }</code></pre>
-<h2>Planned response</h2>
-<pre><code>{
-  "currency": "USD",
-  "routes": [
-    {
-      "provider": "example-provider",
-      "gpu": "H100",
-      "hourly_price": 0,
-      "estimated_total": 0,
-      "destination": "provider-url"
-    }
-  ]
-}</code></pre>
 <h2>Monetization model</h2>
-<p>The production API is intended to support metered usage or prepaid credits for software agents. Provider referral/affiliate revenue may also be used where disclosed and permitted. Automated fake clicks, fake referrals and simulated conversions are not part of the model.</p>
+<p>Paid access will use prepaid credits with PayPal receiving payments only. Provider referral/affiliate revenue may also be used where disclosed and permitted. Automated fake clicks, fake referrals and simulated conversions are not part of the model.</p>
 <h2>Why this exists</h2>
-<p>Agents should be able to choose compute programmatically instead of scraping pricing pages or relying on a human to compare providers. The router will focus on normalized prices, workload fit and machine-readable responses.</p>
+<p>Agents should be able to choose compute programmatically instead of scraping pricing pages or relying on a human to compare providers. The router focuses on normalized prices, workload fit and machine-readable responses.</p>
 <p><a href="/">Back to AI Compute Router</a></p>
+<script>
+(function(){
+  const base='https://countapi.mileshilliard.com/api/v1/hit/';
+  const prefix='giuelvy-agent-api-intent-20260909-';
+  const notice=document.getElementById('notice');
+  document.querySelectorAll('.buy').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const plan=btn.dataset.plan;
+      const key='giuelvy_intent_'+plan;
+      if(localStorage.getItem(key)==='1'){
+        notice.style.display='block';
+        notice.textContent='Your purchase intent for this plan was already recorded on this browser. No payment has been made.';
+        return;
+      }
+      btn.disabled=true;
+      try{
+        await fetch(base+prefix+plan,{mode:'cors',cache:'no-store'});
+        localStorage.setItem(key,'1');
+        notice.textContent='Thanks — your purchase intent was recorded. PayPal checkout is not live yet, so you have not been charged.';
+      }catch(e){
+        notice.textContent='Checkout is not live yet and no payment has been made. The intent counter could not be reached this time.';
+      }finally{
+        notice.style.display='block';
+        btn.disabled=false;
+      }
+    });
+  });
+})();
+</script>
 </body></html>
