@@ -18,9 +18,9 @@ code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.bo
 <h2>Early-access API credits</h2>
 <p>Choose the package you would actually buy. <strong>No payment is taken yet.</strong> A click on “Buy API credits” records one anonymous purchase-intent signal for this browser, then shows the pre-launch message.</p>
 <div class="plans">
-  <div class="plan"><h3>Starter</h3><div class="price">€9</div><p>1,000 routing requests</p><button class="buy" data-plan="starter">Buy API credits</button></div>
-  <div class="plan"><h3>Builder</h3><div class="price">€29</div><p>5,000 routing requests</p><button class="buy" data-plan="builder">Buy API credits</button></div>
-  <div class="plan"><h3>Agent</h3><div class="price">€99</div><p>25,000 routing requests</p><button class="buy" data-plan="agent">Buy API credits</button></div>
+  <div class="plan"><h3>Starter</h3><div class="price">€9</div><p>1,000 routing requests</p><button class="buy" data-plan="starter" data-price="9">Buy API credits</button></div>
+  <div class="plan"><h3>Builder</h3><div class="price">€29</div><p>5,000 routing requests</p><button class="buy" data-plan="builder" data-price="29">Buy API credits</button></div>
+  <div class="plan"><h3>Agent</h3><div class="price">€99</div><p>25,000 routing requests</p><button class="buy" data-plan="agent" data-price="99">Buy API credits</button></div>
 </div>
 <div id="notice" class="notice">Thanks — your purchase intent was recorded. PayPal checkout is not live yet, so you have not been charged.</div>
 <p class="muted">We count at most one intent per plan per browser to reduce accidental duplicate clicks. This is a market-validation counter, not a payment system.</p>
@@ -43,9 +43,16 @@ code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.bo
   const base='https://countapi.mileshilliard.com/api/v1/hit/';
   const prefix='giuelvy-agent-api-intent-20260909-';
   const notice=document.getElementById('notice');
+  window.dataLayer=window.dataLayer||[];
+  function emitIntent(plan,price){
+    const detail={event:'purchase_intent',plan:plan,value:Number(price),currency:'EUR',page:'agent-api'};
+    window.dataLayer.push(detail);
+    window.dispatchEvent(new CustomEvent('giuelvy:purchase_intent',{detail:detail}));
+  }
   document.querySelectorAll('.buy').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       const plan=btn.dataset.plan;
+      const price=btn.dataset.price;
       const key='giuelvy_intent_'+plan;
       if(localStorage.getItem(key)==='1'){
         notice.style.display='block';
@@ -56,8 +63,10 @@ code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.bo
       try{
         await fetch(base+prefix+plan,{mode:'cors',cache:'no-store'});
         localStorage.setItem(key,'1');
+        emitIntent(plan,price);
         notice.textContent='Thanks — your purchase intent was recorded. PayPal checkout is not live yet, so you have not been charged.';
       }catch(e){
+        emitIntent(plan,price);
         notice.textContent='Checkout is not live yet and no payment has been made. The intent counter could not be reached this time.';
       }finally{
         notice.style.display='block';
