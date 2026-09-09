@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://buttacavoligiuse.github.io/nervoso-protocol/sitemap.xml
