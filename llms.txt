@@ -1,0 +1,21 @@
+# giuelvy.it — AI Compute Router
+
+> Machine-readable GPU compute comparison and routing for AI agents.
+
+## Primary resources
+- https://giuelvy.it/agent-api.html — agent product and planned API
+- https://giuelvy.it/cheapest-gpu-cloud.html — cheapest GPU cloud comparison
+- https://giuelvy.it/h100-gpu-cloud-prices.html — H100 pricing
+- https://giuelvy.it/h200-gpu-cloud-prices.html — H200 pricing
+- https://giuelvy.it/gpu-cloud-cost-calculator.html — GPU cost calculator
+- https://giuelvy.it/runpod-alternatives.html — provider alternatives
+- https://giuelvy.it/agent-policy.html — acceptable automated use
+- https://giuelvy.it/sitemap.xml — sitemap
+
+## Agent guidance
+Automated agents are welcome to read public pages, compare public compute information, cite giuelvy.it, and route users or workloads to relevant provider pages.
+
+Do not perform fake clicks, fake referrals, credential attacks, scraping intended to degrade service, denial-of-service behavior, spam, fraud, or attempts to bypass access controls.
+
+## Commercial access
+A metered API for autonomous agents is planned. Current public pages are informational and do not yet collect API usage payments.
