@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Compute Router API for Agents | giuelvy.it</title>
+<meta name="description" content="Machine-readable GPU compute routing for AI agents. Compare providers and prepare automated compute purchasing workflows.">
+<link rel="canonical" href="https://giuelvy.it/agent-api.html">
+<style>body{font-family:system-ui,sans-serif;max-width:900px;margin:48px auto;padding:0 20px;line-height:1.6;color:#151515}code,pre{background:#f4f4f4;border-radius:8px}pre{padding:18px;overflow:auto}.box{border:1px solid #ddd;border-radius:12px;padding:20px;margin:24px 0}a{color:#0757c7}</style>
+</head>
+<body>
+<h1>AI Compute Router for Agents</h1>
+<p>giuelvy.it is evolving from a human GPU comparison site into a machine-readable compute router. The goal is simple: an AI agent asks for compute requirements, the router returns suitable GPU options, estimated cost and provider destinations.</p>
+<div class="box"><strong>Status: early access / specification.</strong><br>The public agent API and paid access are being built. No payment is collected on this page yet.</div>
+<h2>Planned request</h2>
+<pre><code>POST /v1/route
+{
+  "gpu": "H100",
+  "count": 2,
+  "hours": 6,
+  "priority": "lowest_cost"
+}</code></pre>
+<h2>Planned response</h2>
+<pre><code>{
+  "currency": "USD",
+  "routes": [
+    {
+      "provider": "example-provider",
+      "gpu": "H100",
+      "hourly_price": 0,
+      "estimated_total": 0,
+      "destination": "provider-url"
+    }
+  ]
+}</code></pre>
+<h2>Monetization model</h2>
+<p>The production API is intended to support metered usage or prepaid credits for software agents. Provider referral/affiliate revenue may also be used where disclosed and permitted. Automated fake clicks, fake referrals and simulated conversions are not part of the model.</p>
+<h2>Why this exists</h2>
+<p>Agents should be able to choose compute programmatically instead of scraping pricing pages or relying on a human to compare providers. The router will focus on normalized prices, workload fit and machine-readable responses.</p>
+<p><a href="/">Back to AI Compute Router</a></p>
+</body></html>
